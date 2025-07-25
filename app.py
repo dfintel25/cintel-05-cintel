@@ -83,6 +83,12 @@ def reactive_calc_combined():
     # Every time we call this function, we'll get all these values
     return deque_snapshot, df, latest_dictionary_entry
 
+# --------------------------------------------
+# Initialize a REACTIVE CALC that calculates a prediction based off
+# of reactive_calc_combined.
+# Display results with a gradient theme.
+#---------------------------------------------
+
 @reactive.calc()
 def predicted_temp():
     _, df, _ = reactive_calc_combined()
@@ -108,10 +114,6 @@ def get_temp_gradient(temp: float) -> str:
         return "bg-gradient-blue-purple"
 
 
-
-
-
-
 # Define the Shiny UI Page layout
 # Call the ui.page_opts() function
 # Set title to a string in quotes that will appear at the top
@@ -121,6 +123,7 @@ ui.page_opts(title="PyShiny Express: Live Data Example", fillable=True)
 # Sidebar is typically used for user interaction/information
 # Note the with statement to create the sidebar followed by a colon
 # Everything in the sidebar is indented consistently
+# Add a ui.h6 for "Last Updated"
 with ui.sidebar(open="open"):
 
     ui.h2("Antarctic Explorer", class_="text-center")
@@ -131,6 +134,11 @@ with ui.sidebar(open="open"):
     ui.hr()
     
     ui.h6("Links:")
+    ui.a(
+        "dfintel25 GitHub",
+        href="https://github.com/dfintel25",
+        target="_blank",
+    )
     ui.a(
         "GitHub Source",
         href="https://github.com/denisecase/cintel-05-cintel",
@@ -211,6 +219,11 @@ with ui.layout_columns():
                 pd.set_option('display.width', None)
                 return render.DataGrid(df, width="100%")
 
+#------------------------------------------------------------
+# Initialize two charts
+# 1) Scatter plot with regression
+# 2) BAr chart with trend line
+#------------------------------------------------------------
 
 with ui.layout_columns():
     with ui.card():
